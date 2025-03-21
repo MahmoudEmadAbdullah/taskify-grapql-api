@@ -5,6 +5,7 @@ const authTypeDefs = gql`
         name: String!
         email: String!
         password: String!
+        passwordConfirm: String!
     }
 
     input VerifyEmailInput {
@@ -42,6 +43,7 @@ const authTypeDefs = gql`
     input ResetPasswordInput {
         email: String!
         newPassword: String!
+        newPasswordConfirm: String!
     }
 
     type ResetPasswordPayload {
@@ -49,7 +51,7 @@ const authTypeDefs = gql`
     }
 
     type Mutation {
-        signup(input: SignupInput): String!
+        signup(input: SignupInput!): String!
         verifyEmail(input: VerifyEmailInput): String!
         login(input: LoginInput): AuthPayload
         refreshToken: RefreshTokenPayload
@@ -59,5 +61,6 @@ const authTypeDefs = gql`
         resetPassword(input: ResetPasswordInput): ResetPasswordPayload
     }
 `;
+
 
 module.exports = authTypeDefs;
