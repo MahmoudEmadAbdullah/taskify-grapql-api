@@ -7,7 +7,7 @@ const login = async (input, context) => {
     const { email, password } = input;
     
     // Verify the user
-    const user = await User.findOne({ email }).select('password email name');
+    const user = await User.findOne({ email }).select('password email name role');
     if(!user || !(await bcrypt.compare(password, user.password))) {
         throw new AuthenticationError('Invalid email or password');
     }

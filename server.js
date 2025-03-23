@@ -13,14 +13,13 @@ const authMiddleware = require('./src/middlewares/authMiddleware');
 
 const { testTypeDefs, testResolvers } = require('./src/modules/test/index');
 const { authTypeDefs, authResolvers } = require('./src/modules/auth/index');
-
+const { userTypeDefs, userResolvers } = require('./src/modules/user/index');
 
 const server = new ApolloServer({
-    typeDefs: [testTypeDefs, authTypeDefs],
-    resolvers: [testResolvers, authResolvers],
+    typeDefs: [testTypeDefs, authTypeDefs, userTypeDefs],
+    resolvers: [testResolvers, authResolvers, userResolvers],
     formatError,
 });
-
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -41,7 +40,8 @@ const port = process.env.PORT || 3000;
             return { 
                 req, 
                 res, 
-                userId: user ? user.userId : null
+                userId: user ? user.userId : null,
+                role: user ? user.role : null
             };
         }
     }));

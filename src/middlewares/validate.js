@@ -3,11 +3,13 @@ const { ValidationError } = require('../utils/errors');
 
 const validate = (schema) => (resolver) => async (parent, args, context, info) => {
   try {
-    if (!args || !args.input) {
+    const data = args.input || args;
+
+    if (!data) {
       throw new ValidationError('Invalid input: input is required');
     }
 
-    await schema.parseAsync(args.input);
+    await schema.parseAsync(data);
     return resolver(parent, args, context, info);
   } catch (err) {
     if (err instanceof z.ZodError) {

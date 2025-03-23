@@ -29,7 +29,7 @@ const authResolvers = {
 
         logout: async (_, __, context) => {
             if(!context.userId) {
-                throw new AuthenticationError('Unauthorized, Please Login')
+                throw new AuthenticationError('Unauthorized. Please log in to continue.')
             }
             return authController.logout(context);
         },

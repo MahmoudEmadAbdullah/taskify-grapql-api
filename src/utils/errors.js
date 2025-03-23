@@ -60,6 +60,15 @@ class InternalServerError extends GraphQLError {
     }
 }
 
+class ForbiddenError extends GraphQLError {
+    constructor(message = 'Forbidden') {
+        super(message, {
+            extensions: {
+                code: 'FORBIDDEN'
+            }
+        });
+    }
+}
 
 module.exports = { 
     AuthenticationError, 
@@ -67,6 +76,7 @@ module.exports = {
     NotFoundError,
     ExpiredTokenError,
     InvalidTokenError,
-    InternalServerError
+    InternalServerError,
+    ForbiddenError
 };
 

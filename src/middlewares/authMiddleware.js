@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
-const { AuthenticationError } = require('../utils/errors');
-
+const { AuthenticationError, NotFoundError } = require('../utils/errors');
+const  User = require('../../DB/models/userModel');
 
 const authMiddleware = async ({ req }) => {
     // check if token exist, if exists catch it
@@ -16,8 +16,13 @@ const authMiddleware = async ({ req }) => {
 
     // verify accessToken (no changes happens, expired token)
     const decoded = jwt.verify(accessToken, process.env.JWT_ACCESS_SECRET);
+
+    const user = await User.findById(decoded.userId);
+    if(!user) {
+        throw new NotFoundError('User not found');
+    }
     
-    return { userId: decoded.userId };
+    return { userId: user._id, role: user.role };
 };
 
 
