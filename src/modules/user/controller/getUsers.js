@@ -2,6 +2,10 @@ const { NotFoundError } = require('../../../utils/errors');
 const ApiFeatures = require('../../../utils/apiFeatures');
 const User = require('../../../../DB/models/userModel');
 
+/**
+ * @desc      Get all users
+ * @access    Private/admin
+ */
 const getUsers = async (args) => {
     const apiFeatures = new ApiFeatures(User.find(), args)
         .filter()

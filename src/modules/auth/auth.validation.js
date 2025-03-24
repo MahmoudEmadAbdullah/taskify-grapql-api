@@ -1,5 +1,4 @@
 const { z } = require('zod');
-const User = require('../../../DB/models/userModel');
 
 
 const signupSchema = z.object({
@@ -8,11 +7,7 @@ const signupSchema = z.object({
         .max(20,  { message: 'User name must be at most 20 characters' })
         .trim(),
     email: z.string()
-        .email({ message: 'Please enter a valid email' })
-        .refine(async (email) => {
-            const userExists = await User.findOne({ email });
-            return !userExists;
-        }, { message: 'Email already exists' }),
+        .email({ message: 'Please enter a valid email' }),
     password: z.string()
         .min(8, { message: 'Password must be at least 8 characters' })
         .regex(

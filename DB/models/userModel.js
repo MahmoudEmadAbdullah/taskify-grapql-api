@@ -43,6 +43,7 @@ const userSchema = new Schema(
         passwordResetCode: String,
         passwordResetExpires: Date,
         passwordResetVerified: Boolean,
+        passwordChangedAt: Date,
         lastLogin: Date,
         role: {
             type: String,

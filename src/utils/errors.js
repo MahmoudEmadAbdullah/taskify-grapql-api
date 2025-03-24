@@ -70,6 +70,16 @@ class ForbiddenError extends GraphQLError {
     }
 }
 
+class BadRequestError extends GraphQLError {
+    constructor(message = 'Bad request') {
+        super(message, {
+            extensions: {
+                code: 'BAD_REQUEST'
+            }
+        });
+    }
+}
+
 module.exports = { 
     AuthenticationError, 
     ValidationError, 
@@ -77,6 +87,7 @@ module.exports = {
     ExpiredTokenError,
     InvalidTokenError,
     InternalServerError,
-    ForbiddenError
+    ForbiddenError,
+    BadRequestError
 };
 
