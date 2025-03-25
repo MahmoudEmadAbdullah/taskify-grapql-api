@@ -63,6 +63,12 @@ userSchema.pre('save', async function(next) {
     next();
 });
 
+userSchema.virtual('id').get(function () {
+    return this._id.toHexString();
+});
+userSchema.set('toJSON', { virtuals: true, getters: true });
+userSchema.set('toObject', { virtuals: true, getters: true });
+
 // Create model
 const User = mongoose.model('User', userSchema);
 module.exports = User;

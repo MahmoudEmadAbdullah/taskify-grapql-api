@@ -16,11 +16,9 @@ const authResolvers = {
         signup: validate(signupSchema)(async (_, { input }) => {
             return authController.signup(input);
         }),
-
         verifyEmail: validate(verifyEmailSchema)(async (_, { input }) => {
             return authController.verifyEmail(input);
         }),
-
         login: validate(loginSchema)(async (_, { input }, context) => {
             return authController.login(input, context);
         }),
@@ -33,15 +31,12 @@ const authResolvers = {
             }
             return authController.logout(context);
         },
-
         forgotPassword: validate(forgotPasswordSchema)(async (_, { input }) => {
             return authController.forgotPassword(input);
         }),
-
         verifyResetCode: validate(resetCodeSchema)(async (_, { input }) => {
             return authController.verifyResetCode(input);
         }),
-
         resetPassword: validate(resetPasswordSchema)(async (_, { input }, context) => {
             return authController.resetPassword(input, context);
         })

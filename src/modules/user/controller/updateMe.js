@@ -1,4 +1,6 @@
 const { NotFoundError } = require('../../../utils/errors');
+const { client } = require('../../../config/redisConfig');
+const { deleteCacheKeys } = require('../../../utils/cacheUtils');
 const User = require('../../../../DB/models/userModel');
 
 /**
@@ -14,6 +16,13 @@ const updateMe = async (userId, input) => {
     );
     if(!user) {
         throw new NotFoundError('User not found');
+    }
+    const cacheKey = `user:${userId}`;
+    try {
+        await client.del(cacheKey);
+        await deleteCacheKeys('users:*');
+    } catch(err) {
+        console.error('Cache Deletion Error:', err);
     }
     return user;
 };

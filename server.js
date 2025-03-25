@@ -10,6 +10,7 @@ dotenv.config({ path: './config.env' });
 const dbConnection = require('./DB/database');
 const formatError = require('./src/middlewares/formatError');
 const authMiddleware = require('./src/middlewares/authMiddleware');
+const { connectRedis } = require('./src/config/redisConfig');
 
 const { testTypeDefs, testResolvers } = require('./src/modules/test/index');
 const { authTypeDefs, authResolvers } = require('./src/modules/auth/index');
@@ -26,6 +27,7 @@ const port = process.env.PORT || 3000;
 
 (async () => {
     await dbConnection();
+    await connectRedis();
     await server.start();
 
     //Middleware

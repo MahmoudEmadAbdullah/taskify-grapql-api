@@ -1,4 +1,5 @@
 const { ValidationError } = require('../../../utils/errors');
+const { deleteCacheKeys } = require('../../../utils/cacheUtils');
 const User = require('../../../../DB/models/userModel');
 
 /**
@@ -17,6 +18,13 @@ const createUser = async (input) => {
         password,
         role
     });
+    // Delete users from cache
+    try {
+        await deleteCacheKeys('users:*');
+    } catch(err) {
+        console.error('Error deleting cache keys:', err);
+    }
+
     return newUser;
 };
 

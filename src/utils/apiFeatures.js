@@ -11,9 +11,7 @@
             excludedFields.forEach((field) => delete queryObj[field]);
 
             let queryStr = JSON.stringify(queryObj);
-            console.log('Query String:', queryStr);
             queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
-            console.log('Query Object:', JSON.parse(queryStr));
 
             this.mongooseQuery = this.mongooseQuery.find(JSON.parse(queryStr));
             return this;

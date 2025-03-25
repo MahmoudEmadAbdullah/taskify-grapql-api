@@ -48,7 +48,7 @@ const userTypeDefs = gql`
         name: String
         email: String
         role: String
-        createdAt: String
+        createdAt: DateTime
     }
     
     type User {
@@ -57,6 +57,11 @@ const userTypeDefs = gql`
         email: String
         role: String!
         createdAt: DateTime!
+    }
+
+    type ChangeMyPasswordResponse {
+        success: Boolean!
+        accessToken: String!
     }
 
     type PaginationResult {
@@ -69,9 +74,15 @@ const userTypeDefs = gql`
     }
 
     type GetUsersResponse {
+        source: String!
         success: Boolean!
         pagination: PaginationResult
         data: [User!]!
+    }
+
+    type UserResponse {
+        source: String!
+        data: User!
     }
     
     type Mutation {
@@ -80,12 +91,12 @@ const userTypeDefs = gql`
         changeUserPassword(input: ChangeUserPasswordInput!): User!
         deleteUser(userId: ID!): User!
         updateMe(input: UpdateMeInput!): User!
-        changeMyPassword(input: ChangeMyPasswordInput!): String!
+        changeMyPassword(input: ChangeMyPasswordInput!): ChangeMyPasswordResponse!
         deleteMe: String!
     }
 
     type Query {
-        getUser(userId: ID!): User!
+        getUser(userId: ID!): UserResponse!
         getUsers(
             pagination: PaginationInput
             search: SearchInput
@@ -93,7 +104,7 @@ const userTypeDefs = gql`
             sort: String
             fields: String   
         ) : GetUsersResponse!
-        getMe: User!
+        getMe: UserResponse!
     }
 `;
 
