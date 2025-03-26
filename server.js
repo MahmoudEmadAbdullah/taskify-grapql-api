@@ -12,13 +12,13 @@ const formatError = require('./src/middlewares/formatError');
 const authMiddleware = require('./src/middlewares/authMiddleware');
 const { connectRedis } = require('./src/config/redisConfig');
 
-const { testTypeDefs, testResolvers } = require('./src/modules/test/index');
 const { authTypeDefs, authResolvers } = require('./src/modules/auth/index');
 const { userTypeDefs, userResolvers } = require('./src/modules/user/index');
+const { taskTypeDefs, taskResolvers } = require('./src/modules/task/index');
 
 const server = new ApolloServer({
-    typeDefs: [testTypeDefs, authTypeDefs, userTypeDefs],
-    resolvers: [testResolvers, authResolvers, userResolvers],
+    typeDefs: [ authTypeDefs, userTypeDefs, taskTypeDefs ],
+    resolvers: [ authResolvers, userResolvers, taskResolvers ],
     formatError,
 });
 
