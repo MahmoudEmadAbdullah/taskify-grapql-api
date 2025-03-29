@@ -18,7 +18,9 @@ const getTask = async (input, context) => {
         console.error('Error fetching task from Redis:', err);
     }
 
-    const task = await Task.findById(taskId);
+    const task = await Task.findById(taskId)
+        .populate('createdBy', 'name')
+        .populate('labels');
     if(!task) {
         throw new NotFoundError('Task not found');
     }

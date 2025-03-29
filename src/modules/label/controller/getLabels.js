@@ -25,6 +25,7 @@ const getLabels = async (args, context) => {
         ? Label.find()
         : Label.find({ createdBy: context.userId });
 
+    query = query.populate('createdBy', 'name');
     const apiFeatures = await new ApiFeatures(query, args)
         .filter()
         .search({

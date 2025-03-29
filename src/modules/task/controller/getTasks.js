@@ -25,6 +25,8 @@ const getTasks = async (args, context) => {
         ? Task.find()
         : Task.find({ createdBy: context.userId });
 
+    query = query.populate('createdBy', 'name')
+        .populate('labels');
     const apiFeatures = new ApiFeatures(query, args)
         .filter()
         .search({

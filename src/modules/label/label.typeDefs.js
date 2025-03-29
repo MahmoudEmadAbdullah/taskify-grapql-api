@@ -32,13 +32,18 @@ const labelTypeDefs = gql`
         color: String
         createdAt: DateTime
     }
+    
+    type User {
+        id: ID!
+        name: String!
+    }
 
     type Label {
         id: ID!
         name: String!
         color: String!
         createdAt: DateTime!
-        createdBy: ID!
+        createdBy: User
     }
 
     type PaginationResult {

@@ -1,13 +1,14 @@
 const Task = require('../../../../DB/models/taskModel');
+const Label = require('../../../../DB/models/labelModel');
 const cloudinary = require('../../../config/cloudinaryConfig');
 const { singleImageUpload } = require('../../../utils/uploadImage');
 const { client } = require('../../../config/redisConfig');
 const { deleteCacheKeys } = require('../../../utils/cacheUtils');
-const { AuthenticationError, NotFoundError } = require('../../../utils/errors');
+const { AuthenticationError, NotFoundError, ValidationError } = require('../../../utils/errors');
 
 
 const updateTask = async (input, context) => {
-    const { taskId, title, description, deadline, image, taskStatus } = input;
+    const { taskId, title, description, deadline, image, taskStatus, labels } = input;
 
     const task = await Task.findById(taskId);
     if(!task) { 
@@ -27,6 +28,14 @@ const updateTask = async (input, context) => {
         task.imagePublicId = uploadImage.public_id;
     }
 
+    if(labels) {
+        const validLabels = await Label.find({ _id: { $in: labels } });
+        if(validLabels.length !== labels.length) {
+            throw new ValidationError('Invalid labels provided');
+        }
+        task.labels = labels;
+    }
+
     const updateFields = {
         ...(title !== undefined && { title }),
         ...(description !== undefined && { description }),
@@ -35,6 +44,7 @@ const updateTask = async (input, context) => {
     };
     Object.assign(task, updateFields);
     await task.save();
+    await task.populate('labels');
 
     const cacheKey = `task:${taskId}`;
     try {
@@ -44,7 +54,8 @@ const updateTask = async (input, context) => {
         console.error('Cache Deletion Error:', err);
     }
     
-    return task;
+    const taskDataJSON = task.toJSON();
+    return taskDataJSON;
 };
 
 module.exports = updateTask;

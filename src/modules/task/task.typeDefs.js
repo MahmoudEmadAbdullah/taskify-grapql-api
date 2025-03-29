@@ -9,6 +9,7 @@ const taskTypeDefs = gql`
         description: String
         deadline: DateTime
         image: Upload
+        labels: [ID!]
     }
 
     input UpdateTaskInput {
@@ -18,6 +19,7 @@ const taskTypeDefs = gql`
         deadline: DateTime
         image: Upload
         taskStatus: String
+        labels: [ID!]
     }
 
     input DeleteTaskInput {
@@ -45,6 +47,17 @@ const taskTypeDefs = gql`
         createdAt: DateTime
     }
 
+    type User {
+        id: ID!
+        name: String!
+    }
+
+    type Label {
+    id: ID!
+    name: String!
+    color: String!
+    }
+
     type Task {
         id: ID!
         title: String!
@@ -53,6 +66,8 @@ const taskTypeDefs = gql`
         taskStatus: String
         deadline: DateTime
         createdAt: DateTime!
+        createdBy: User
+        labels: [Label!]!
     }
 
     type PaginationResult {

@@ -35,7 +35,13 @@ const taskSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
             required: true
-        }
+        },
+        labels: [
+            {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Label'
+            }
+        ]
     }, 
     { timestamps: true }
 );
@@ -43,10 +49,12 @@ const taskSchema = new mongoose.Schema(
 taskSchema.virtual('id').get(function() {
     return this._id.toHexString();
 });
+
+
 taskSchema.set('toJSON', { virtuals: true, getters: true });
 taskSchema.set('toObject', { virtuals: true, getters: true });
 
 // Create model
 const Task = mongoose.model('Task', taskSchema);
 
-module.exports = Task;
+module.exports = Task;  
