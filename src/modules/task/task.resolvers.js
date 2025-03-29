@@ -37,9 +37,9 @@ const taskResolvers = {
             }
             return taskController.getTasks(args, context);
         },
-        getTask: async (_, { input }, context) => {
+        getTask: validate(getTaskSchema)(async (_, { input }, context) => {
             return taskController.getTask(input, context);
-        }
+        })
     }
 };
 

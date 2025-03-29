@@ -38,9 +38,10 @@ const taskTypeDefs = gql`
     }
 
     input FilterInput {
-        name: String
-        email: String
-        role: String
+        title: String
+        description: String
+        taskStatus: String
+        deadline: DateTime
         createdAt: DateTime
     }
 

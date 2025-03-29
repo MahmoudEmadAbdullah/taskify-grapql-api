@@ -16,10 +16,11 @@ const { connectRedis } = require('./src/config/redisConfig');
 const { authTypeDefs, authResolvers } = require('./src/modules/auth/index');
 const { userTypeDefs, userResolvers } = require('./src/modules/user/index');
 const { taskTypeDefs, taskResolvers } = require('./src/modules/task/index');
+const { labelTypeDefs, labelResolvers } = require('./src/modules/label/index');
 
 const server = new ApolloServer({
-    typeDefs: [ authTypeDefs, userTypeDefs, taskTypeDefs ],
-    resolvers: [ authResolvers, userResolvers, taskResolvers ],
+    typeDefs: [ authTypeDefs, userTypeDefs, taskTypeDefs, labelTypeDefs ],
+    resolvers: [ authResolvers, userResolvers, taskResolvers, labelResolvers ],
     formatError,
     csrfPrevention: false, 
 });
