@@ -29,8 +29,8 @@ const userResolvers = {
             const { userId, newPassword } = input;
             return userController.changeUserPassword({ userId, newPassword });
         })),
-        deleteUser: verifyRole('admin')(validate(deleteUserSchema)(async (_, { userId }) => {
-            return userController.deleteUser(userId);
+        deleteUser: verifyRole('admin')(validate(deleteUserSchema)(async (_, { userId }, context) => {
+            return userController.deleteUser(userId, context.userId);
         })),
         updateMe: validate(updateMeSchema)(async (_, { input }, context) => {
             if(!context.userId) {
