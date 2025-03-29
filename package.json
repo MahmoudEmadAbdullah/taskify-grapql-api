@@ -22,12 +22,15 @@
     "graphql": "^16.10.0",
     "graphql-scalars": "^1.24.2",
     "graphql-tag": "^2.12.6",
+    "graphql-upload-minimal": "^1.6.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.12.1",
     "morgan": "^1.10.0",
     "nodemailer": "^6.10.0",
     "nodemon": "^3.1.9",
     "redis": "^4.7.0",
+    "sharp": "^0.33.5",
+    "uuid": "^11.1.0",
     "validator": "^13.12.0",
     "zod": "^3.24.2"
   }

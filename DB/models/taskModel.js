@@ -24,6 +24,9 @@ const taskSchema = new mongoose.Schema(
             type: String,
             default: null,
         },
+        imagePublicId: {
+            type: String
+        },
         deadline: {
             type: Date,
             default: null
@@ -36,6 +39,12 @@ const taskSchema = new mongoose.Schema(
     }, 
     { timestamps: true }
 );
+
+taskSchema.virtual('id').get(function() {
+    return this._id.toHexString();
+});
+taskSchema.set('toJSON', { virtuals: true, getters: true });
+taskSchema.set('toObject', { virtuals: true, getters: true });
 
 // Create model
 const Task = mongoose.model('Task', taskSchema);

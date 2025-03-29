@@ -2,25 +2,94 @@ const { gql } = require('graphql-tag');
 
 const taskTypeDefs = gql`
     scalar DateTime
+    scalar Upload
 
     input CreateTaskInput {
         title: String!
         description: String
         deadline: DateTime
-        image: String
+        image: Upload
+    }
+
+    input UpdateTaskInput {
+        taskId: ID!
+        title: String
+        description: String
+        deadline: DateTime
+        image: Upload
+        taskStatus: String
+    }
+
+    input DeleteTaskInput {
+        taskId: ID!
+    }
+
+    input GetTaskInput {
+        taskId: ID!
+    }
+
+    input PaginationInput {
+        page: Int
+        limit: Int
+    }
+
+    input SearchInput { 
+        keyword: String
+    }
+
+    input FilterInput {
+        name: String
+        email: String
+        role: String
+        createdAt: DateTime
     }
 
     type Task {
         id: ID!
         title: String!
         description: String
-        image: String
+        image: String   
+        taskStatus: String
         deadline: DateTime
         createdAt: DateTime!
     }
 
+    type PaginationResult {
+        currentPage: Int
+        limit: Int
+        count: Int
+        totalPages: Int
+        nextPage: Int
+        prevPage: Int
+    }
+
+    type GetTasksResponse {
+        source: String!
+        success: Boolean!
+        pagination: PaginationResult
+        data: [Task!]!
+    }
+
+    type GetTaskResponse {
+        source: String!
+        data: Task!
+    }
+
     type Mutation {
         createTask(input: CreateTaskInput!): Task!
+        updateTask(input: UpdateTaskInput!): Task!
+        deleteTask(input: DeleteTaskInput!): String!
+    }
+
+    type Query {
+        getTasks(
+            pagination: PaginationInput
+            search: SearchInput
+            filter: FilterInput
+            sort: String
+            fields: String
+        ): GetTasksResponse!
+        getTask(input: GetTaskInput!): GetTaskResponse!
     }
 `;
 

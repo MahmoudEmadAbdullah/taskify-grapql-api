@@ -1,6 +1,7 @@
 const express = require('express');
 const { ApolloServer } = require('@apollo/server');
 const { expressMiddleware } = require('@apollo/server/express4');
+const { graphqlUploadExpress } = require('graphql-upload-minimal');
 const cors = require('cors');
 const dotenv = require('dotenv');
 const cookieParser = require('cookie-parser');
@@ -20,6 +21,7 @@ const server = new ApolloServer({
     typeDefs: [ authTypeDefs, userTypeDefs, taskTypeDefs ],
     resolvers: [ authResolvers, userResolvers, taskResolvers ],
     formatError,
+    csrfPrevention: false, 
 });
 
 const app = express();
@@ -35,6 +37,7 @@ const port = process.env.PORT || 3000;
     app.use(express.json());
     app.use(cookieParser());
     app.use(morgan("dev"));
+    app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 1 }));
 
     app.use('/graphql', expressMiddleware(server, {
         context: async ({ req, res }) => {

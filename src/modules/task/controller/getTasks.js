@@ -1,20 +1,17 @@
-const { client } = require('../../../config/redisConfig');
 const { NotFoundError } = require('../../../utils/errors');
 const ApiFeatures = require('../../../utils/apiFeatures');
-const User = require('../../../../DB/models/userModel');
+const { client } = require('../../../config/redisConfig');
+const Task = require('../../../../DB/models/taskModel');
 
-/**
- * @desc      Get all users
- * @access    Private/admin
- */
-const getUsers = async (args) => {
-    const cacheKey = `users:${JSON.stringify(args)}`;
+
+const getTasks = async (args, context) => {
+    const cacheKey = `tasks:${context.userId}:${JSON.stringify(args)}`;
     try {
         const cachedData = await client.get(cacheKey);
         if(cachedData) {
             const parseData = JSON.parse(cachedData);
-            return { 
-                source: 'Cache', 
+            return {
+                source: 'Cache',
                 success: parseData.success ?? true,
                 pagination: parseData.pagination ?? {},
                 data: parseData.data ?? []
@@ -24,28 +21,33 @@ const getUsers = async (args) => {
         console.error('Error fetching data from Redis:', err);
     }
 
-    const apiFeatures = new ApiFeatures(User.find(), args)
+    let query = context.role === 'admin' 
+        ? Task.find()
+        : Task.find({ createdBy: context.userId });
+
+    const apiFeatures = new ApiFeatures(query, args)
         .filter()
         .search({
-            name: 'string',
-            email: 'string',
-            role: 'string',
-            createdAt: 'date',
+            title: 'string',
+            description: 'string',
+            taskStatu: 'string',
+            deadline: 'date',
+            createdAt: 'date'
         });
 
     const countDocuments = await apiFeatures.mongooseQuery.clone().countDocuments();
     apiFeatures.paginate(countDocuments).sort().limitFields();
 
-    const users = await apiFeatures.mongooseQuery;
-    if(!users || users.length === 0) {
-        throw new NotFoundError('No users found');
+    const tasks = await apiFeatures.mongooseQuery;
+    if(!tasks || tasks.length === 0) {
+        throw new NotFoundError('No tasks found');
     }
 
-    const result = {
-        source: 'database',
+    const result =  {
+        source: 'Database',
         success: true,
         pagination: apiFeatures.paginationResult,
-        data: users
+        data: tasks
     };
 
     try {
@@ -59,4 +61,4 @@ const getUsers = async (args) => {
     return result;
 };
 
-module.exports = getUsers;
+module.exports = getTasks;

@@ -7,7 +7,7 @@ const User = require('../../../../DB/models/userModel');
 
 
 const login = async (input, context) => {
-    console.log('Context in login:', context);
+    // console.log('Context in login:', context);
     const { email, password } = input;
     
     // Verify the user
