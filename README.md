@@ -29,7 +29,6 @@ Taskify is a GraphQL-based task management API built with Node.js, MongoDB, and 
 ### ✅ **Label Management**  
 - Create and manage labels as a separate entity.  
 - Link labels to tasks using MongoDB references.  
-- Use `populate` to fetch label details along with tasks.  
 
 ### ✅ **Caching**  
 - Utilize **Redis** to cache responses for frequently accessed data.  
@@ -58,3 +57,24 @@ Taskify is a GraphQL-based task management API built with Node.js, MongoDB, and 
 - **MongoDB**  
 - **Redis**  
 - **npm**  
+
+
+## **Folder Structure**
+TASKIFY-GRAPQL-API  
+├── DB  
+├── src  
+│   ├── config  
+│   ├── middlewares  
+│   ├── modules  
+│   │   ├── auth  
+│   │   ├── label  
+│   │   ├── task  
+│   │   └── user  
+│   └── utils  
+├── .gitignore  
+├── config.env  
+├── package-lock.json  
+├── package.json  
+├── README.md  
+├── server.js  
+└── taskify-graphql-api.postman_collection.json  

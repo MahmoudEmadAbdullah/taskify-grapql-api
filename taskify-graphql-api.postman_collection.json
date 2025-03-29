@@ -1,0 +1,979 @@
+{
+	"info": {
+		"_postman_id": "439542ae-9543-46d2-a6e2-f04d7d94f4c2",
+		"name": "GraphQL",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37977566"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n  signup(input: {\n    name: \"Mahmoud\",\n    email: \"mahmoudemadcule2025@gmail.com\",\n    password: \"Mahmoud@123\",\n    passwordConfirm: \"Mahmoud@123\"\n  })\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/graphql",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verify Email",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n  verifyEmail(input: {\n    verficationCode: \"486249\"\n  })\n}\n    ",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/graphql",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"",
+									"if (response.data && response.data.login && response.data.login.accessToken) {",
+									"    pm.environment.set('JWT', response.data.login.accessToken);",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n  login(input: {\n    email: \"admin@gmail.com\",\n    password: \"Admin@1234\"\n  }) {\n    accessToken\n    user {\n      id\n      name,\n      email,\n      role\n    }\n  }\n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/graphql",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"",
+									"if(response.data && response.data.refreshToken && response.data.refreshToken.accessToken) {",
+									"    pm.environment.set('JWT', response.data.refreshToken.accessToken)",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": " application/json",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n    refreshToken {\n        accessToken\n    }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/graphql",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n    logout\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/graphql",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Forgot Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n    forgotPassword(input: {\n        email: \"mahmoudemadcule2025@gmail.com\"\n    })\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/graphql",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Verfiy Reset Code",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n    verifyResetCode(input: {\n        resetCode: \"694684\"\n    })\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/graphql",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"",
+									"if(response.data && response.data.resetPassword && response.data.resetPassword.accessToken) {",
+									"    pm.environment.set('JWT', response.data.resetPassword.accessToken);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n    resetPassword(input: {\n        email: \"mahmoudemadcule2025@gmail.com\",\n        newPassword: \"Mahmoud@123\",\n        newPasswordConfirm:  \"Mahmoud@123\"\n    }) {\n        accessToken\n    }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/graphql",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users (admin)",
+			"item": [
+				{
+					"name": "Create User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n    createUser(input: {\n        name: \"user2\",\n        email: \"user2@gmail.com\",\n        password: \"User2@123\",\n        passwordConfirm: \"User2@123\"\n    }) {\n        id,\n        name, \n        role\n    }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/graphql",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n    getUser(userId: \"67e3343af46a03652e2a66ed\") {\n        source,\n        data {\n            id,\n            name,\n            role,\n            email,\n            createdAt\n        }\n    }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/graphql",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Users",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n    getUsers(\n        sort: \"-createdAt\"\n        ) {\n        source\n        success,\n        pagination {\n            currentPage \n            limit,\n            count,\n            totalPages,\n            nextPage,\n            prevPage\n            \n        }\n        data {\n            id,\n            name,\n            email,\n            role,\n            createdAt\n        }\n    }\n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/graphql",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User Data",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n    updateUser(\n        input: {\n            userId: \"67e20edd3820cb3bf2b8bd48\",\n            name: \"user11\"\n        }\n    ) {\n        name,\n        email,\n        role,\n        createdAt,\n        id\n    }\n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/graphql",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change User Password",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n    changeUserPassword(\n        input: {\n            userId: \"67dcdad7aa0b9e73ffc93e67\"\n            newPassword: \"Mahmoud@123\",\n            newPasswordConfirm: \"Mahmoud@123\"\n        }\n    ) {\n        name,\n        role,\n        email,\n        createdAt,\n        id\n    }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/graphql",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n    deleteUser(\n        userId: \"67e3343af46a03652e2a66ed\"\n    ) {\n        name,\n        email,\n        role,\n        id\n    }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/graphql",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Logged Users",
+			"item": [
+				{
+					"name": "getMe",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n  getMe {\n    source,\n    data {\n    name,\n    email,\n    role,\n    id\n    }\n  }\n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/graphql",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Me",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n    updateMe (\n        input: {\n            name: \"user22\"\n        }\n    ) {\n        name, \n        email,\n        role,\n        id\n    }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/graphql",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Change My Password",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const response = pm.response.json();",
+									"",
+									"if (response.data && response.data.changeMyPassword && response.data.changeMyPassword.accessToken) {",
+									"    pm.environment.set('JWT', response.data.changeMyPassword.accessToken);",
+									"}",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n    changeMyPassword (\n        input: {\n            currentPassword: \"User@1234\",\n            newPassword: \"User@123\",\n            newPasswordConfirm: \"User@123\"\n        }\n    ) {\n        success,\n        accessToken\n    }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/graphql",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Me",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n    deleteMe \n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/graphql",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tasks",
+			"item": [
+				{
+					"name": "Create Task",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "operations",
+									"value": "{\n  \"query\": \"mutation ($input: CreateTaskInput!) { createTask(input: $input) { id title description image createdAt labels { id } } }\",\n  \"variables\": {\n    \"input\": {\n      \"title\": \"Test Task22\",\n      \"description\": \"This is a test task22\",\n      \"deadline\": \"2025-12-31T23:59:59.999Z\",\n      \"labels\": [\"67e746bac720cb7cc987b976\", \"67e80c3abbcfc2e0c1b26dfa\"],\n      \"image\": null\n    }\n  }\n}",
+									"type": "text"
+								},
+								{
+									"key": "map",
+									"value": "{\"0\": [\"variables.input.image\"]}",
+									"type": "text"
+								},
+								{
+									"key": "0",
+									"type": "file",
+									"src": "/home/mahmoudemad/Pictures/hp1.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URL}}/graphql",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Tasks",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n  getTasks(sort: \"-createdAt\") {\n    source\n    success\n    pagination {\n      limit\n      count\n      totalPages\n      nextPage\n      prevPage\n    }\n    data {\n      id\n      title\n      description\n      deadline\n      createdAt\n      taskStatus\n      createdBy { \n        id\n        name\n      }\n      labels {\n        id\n        name\n        color\n      }\n    }\n  }\n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/graphql",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Task",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n    updateTask(\n        input: {\n            taskId: \"67e739b0bb89f552ba6e0c95\",\n            title: \"Updated Task 2\",\n            deadline: \"2025-11-11T00:00:00Z\",\n            labels: [\n                \"67e746bac720cb7cc987b976\"\n            ]\n        }\n    ) {\n        id,\n        title,\n        description,\n        image,\n        taskStatus,\n        deadline,\n        createdAt,\n        labels {\n            id,\n            name,\n            color\n        }\n    }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/graphql",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Task",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n    deleteTask(\n        input: {\n            taskId: \"67e72f9a9f6fe06fd1443a47\"\n        }\n    ) \n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/graphql",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Task",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n  getTask(input: { taskId: \"67e739b0bb89f552ba6e0c95\" }) {\n    source\n    data {\n      id\n      title\n      description\n      image\n      deadline\n      createdAt\n      taskStatus\n      createdBy {\n        id\n        name\n      },\n      labels {\n        id\n        name\n        color\n      }\n    }\n  }\n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/graphql",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Labels",
+			"item": [
+				{
+					"name": "Create Label",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n    createLabel(\n        input: {\n            name: \"personal\",\n            color: \"green\"\n        }\n    ) {\n        id,\n        name,\n        color,\n        createdAt,\n    }\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/graphql",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Labels",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "query {\n  getLabels(sort: \"-createdAt\") {\n    source\n    success\n    pagination {\n      limit\n      count\n      totalPages\n      nextPage\n      prevPage\n    }\n    data {\n      id\n      name\n      color\n      createdAt,\n      createdBy {\n        id\n        name\n      }\n    }\n  }\n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/graphql",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Label",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n  updateLabel(input: { \n        labelId: \"67e754e891ff7778c990b773\", \n        name: \"High Priority1\", \n        color: \"blue\" \n    }) {\n    id\n    name\n    color\n    createdAt\n    createdBy\n  }\n}\n",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/graphql",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Label",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{JWT}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "graphql",
+							"graphql": {
+								"query": "mutation {\n    deleteLabel(\n        input: {\n            labelId: \"67e754e891ff7778c990b773\"\n        }\n    )\n}",
+								"variables": ""
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/graphql",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"graphql"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
